@@ -1,10 +1,10 @@
 import edu.princeton.cs.algs4.DepthFirstOrder;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Topological;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 public class SAP {
 
@@ -21,6 +21,8 @@ public class SAP {
 
         g = new Digraph(G);
         bfs(g);
+
+        System.out.println("HAS ORDR = " + new Topological(g).hasOrder());
     }
 
     private void bfs(Digraph graph) {
@@ -45,11 +47,47 @@ public class SAP {
     }
 
     public int length(int v, int w) {
+        if (reversedGraphBFS != null)
+            return findAncestorData(v, w).distance;
         return findAncestorData(Arrays.asList(v), Arrays.asList(w)).distance;
     }
 
     public int ancestor(int v, int w) {
+        if (reversedGraphBFS != null)
+            return findAncestorData(v, w).vertex;
         return findAncestorData(Arrays.asList(v), Arrays.asList(w)).vertex;
+    }
+
+    private int vC = -1;
+    private int wC = -1;
+    private AncestorData ancestorDataC;
+
+    private AncestorData findAncestorData(int v, int w) {
+        if (v == vC && w == wC) return ancestorDataC;
+
+        reversedGraphBFS.validateVertex(v);
+        reversedGraphBFS.validateVertex(w);
+
+        if (v == w) return new AncestorData(v, 0);
+
+        AncestorData ancestorData = new AncestorData(-1, -1);
+
+        int[] pathToV = reversedGraphBFS.pathToReversed(v);
+        int[] pathToW = reversedGraphBFS.pathToReversed(w);
+
+        int minLen = Math.min(pathToV.length, pathToW.length);
+
+        for (int i = 0; i < minLen && pathToV[i] == pathToW[i]; i++) {
+            ancestorData.vertex = pathToV[i];
+        }
+
+        ancestorData.distance = reversedGraphBFS.distTo(v) + reversedGraphBFS.distTo(w) - reversedGraphBFS.distTo[ancestorData.vertex] * 2;
+
+        ancestorDataC = ancestorData;
+        vC = v;
+        wC = w;
+
+        return ancestorData;
     }
 
     private AncestorData findAncestorData(Iterable<Integer> v, Iterable<Integer> w) {
@@ -57,9 +95,7 @@ public class SAP {
 
         if (v == vCached && w == wCached) return ancestorDataCached;
 
-        AncestorData ancestorData = new AncestorData();
-        ancestorData.vertex = -1;
-        ancestorData.distance = Integer.MAX_VALUE;
+        AncestorData ancestorData = new AncestorData(-1, Integer.MAX_VALUE);
 
         ancestorDataCached = ancestorData;
         vCached = v;
@@ -101,16 +137,18 @@ public class SAP {
         SAP sap = new SAP(G);
         //sap.length()
 
-        // System.out.println("ansestor = " + sap.ancestor(13, 1));
-        // System.out.println("len = " + sap.length(13, 1));
-        //
-        List<Integer> v = Arrays.asList(null, 4, -1);
-        List<Integer> w = Arrays.asList(1, 6, 2);
-        System.out.println("__ansestor = " + sap.ancestor(v, w));
-        System.out.println("__a_length = " + sap.length(v, w));
+        System.out.println("ansestor = " + sap.ancestor(13, 4));
+        System.out.println("len = " + sap.length(13, 4));
+        System.out.println("ansestor = " + sap.ancestor(13, 1));
+        System.out.println("len = " + sap.length(13, 1));
 
-        System.out.println("a = " + sap.ancestor(2,6));
-        System.out.println("d = " + sap.length(2,6));
+//        List<Integer> v = Arrays.asList(0, 7, 9, 12, -1);
+//        List<Integer> w = Arrays.asList(1, 2, 4, 5, 10);
+//        System.out.println("__ansestor = " + sap.ancestor(v, w));
+        //System.out.println("__a_length = " + sap.length(v, w));
+
+//        System.out.println("a = " + sap.ancestor(2,6));
+//        System.out.println("d = " + sap.length(2,6));
 
 
 //        while (!StdIn.isEmpty()) {

@@ -71,7 +71,8 @@ public class BFS {
     }
 
     public void validateVertex(Integer vertex) {
-        if (vertex == null || vertex < 0 || vertex > visited.length-1) throw new IllegalArgumentException("Vertex " + vertex + " is not in range of a Graph");
+        if (vertex == null || vertex < 0 || vertex > visited.length - 1)
+            throw new IllegalArgumentException("Vertex " + vertex + " is not in range of a Graph");
     }
 
     public boolean hasPathTo(int v) {
@@ -105,7 +106,6 @@ public class BFS {
             path[i] = v;
             v = pathTo[v];
         }
-        path[path.length - 1] = v;
 
         return path;
     }
