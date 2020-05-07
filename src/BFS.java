@@ -3,9 +3,9 @@ import edu.princeton.cs.algs4.Queue;
 
 public class BFS {
 
-    protected boolean[] visited;
-    protected int[] pathTo;
-    protected int[] distTo;
+    boolean[] visited;
+    int[] pathTo;
+    int[] distTo;
 
     public BFS() {
     }
@@ -20,7 +20,7 @@ public class BFS {
         bfs(g, vertices);
     }
 
-    protected void init(Digraph g) {
+    public void init(Digraph g) {
         visited = new boolean[g.V()];
         pathTo = new int[g.V()];
         distTo = new int[g.V()];
@@ -70,8 +70,8 @@ public class BFS {
         }
     }
 
-    protected void validateVertex(int vertex) {
-        if (vertex < 0 || vertex > visited.length-1) throw new IllegalArgumentException("Vertex " + vertex + " is not in range of a Graph");
+    public void validateVertex(Integer vertex) {
+        if (vertex == null || vertex < 0 || vertex > visited.length-1) throw new IllegalArgumentException("Vertex " + vertex + " is not in range of a Graph");
     }
 
     public boolean hasPathTo(int v) {

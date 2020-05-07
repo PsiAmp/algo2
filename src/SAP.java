@@ -77,6 +77,10 @@ public class SAP {
 
         bfsV.recursiveDoubleBFS(bfsW);
 
+        if (ancestorData.vertex == -1) {
+            ancestorData.distance = -1;
+        }
+
         return ancestorData;
     }
 
@@ -100,13 +104,13 @@ public class SAP {
         // System.out.println("ansestor = " + sap.ancestor(13, 1));
         // System.out.println("len = " + sap.length(13, 1));
         //
-        List<Integer> v = Arrays.asList(13, 23, 24);
-        List<Integer> w = Arrays.asList(16, 17, 6);
+        List<Integer> v = Arrays.asList(null, 4, -1);
+        List<Integer> w = Arrays.asList(1, 6, 2);
         System.out.println("__ansestor = " + sap.ancestor(v, w));
         System.out.println("__a_length = " + sap.length(v, w));
 
-        System.out.println("a = " + sap.ancestor(13,18));
-        System.out.println("d = " + sap.length(13,24));
+        System.out.println("a = " + sap.ancestor(2,6));
+        System.out.println("d = " + sap.length(2,6));
 
 
 //        while (!StdIn.isEmpty()) {

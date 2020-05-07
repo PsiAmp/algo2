@@ -12,7 +12,7 @@ public class Outcast {
 
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns) {
-        int dist[] = new int[nouns.length];
+        int[] dist = new int[nouns.length];
 
 
         // Calculate distances from every point to all other points

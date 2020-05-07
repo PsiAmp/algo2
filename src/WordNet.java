@@ -1,17 +1,17 @@
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Topological;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class WordNet {
 
     // TODO maybe change to a simple List
     // Map containing synset nouns aa a key and a list of synset ids where this noun appears
-    private HashMap<String, Set<Integer>> nounToId;
+    private HashMap<String, List<Integer>> nounToId;
 
     // Map containing synset ids as a key and a list of nouns associated with this id
     private HashMap<Integer, String> synsetIdToWord;
@@ -25,6 +25,7 @@ public class WordNet {
         parseHypernyms(new In(hypernyms));
 
         // TODO check if wordNetGraph is a rooted DAG
+        if (!new Topological(wordNetGraph).hasOrder()) throw new IllegalArgumentException("WordNet graph is not a DAG");
 
         sap = new SAP(wordNetGraph);
     }
@@ -52,11 +53,11 @@ public class WordNet {
                 // Add each noun in the HashMap where noun is a key and synset id is a value
                 // If there's no such noun in the map, create <noun, synsetIds> entry
                 if (!nounToId.containsKey(noun)) {
-                    HashSet<Integer> synsetIds = new HashSet<>();
+                    List<Integer> synsetIds = new ArrayList<>();
                     synsetIds.add(synsetId);
                     nounToId.put(noun, synsetIds);
                 } else {
-                    Set<Integer> synsetIds = nounToId.get(noun);
+                    List<Integer> synsetIds = nounToId.get(noun);
                     synsetIds.add(synsetId);
                 }
             }
@@ -106,8 +107,8 @@ public class WordNet {
         if (!isNoun(nounA) || !isNoun(nounB))
             throw new IllegalArgumentException("Argumant is not a WordNet noun");
 
-        Set<Integer> aIds = nounToId.get(nounA);
-        Set<Integer> bIds = nounToId.get(nounB);
+        List<Integer> aIds = nounToId.get(nounA);
+        List<Integer> bIds = nounToId.get(nounB);
         return sap.length(aIds, bIds);
     }
 
@@ -117,14 +118,14 @@ public class WordNet {
         if (!isNoun(nounA) || !isNoun(nounB))
             throw new IllegalArgumentException("Argument is not a WordNet noun");
 
-        Set<Integer> aIds = nounToId.get(nounA);
-        Set<Integer> bIds = nounToId.get(nounB);
+        List<Integer> aIds = nounToId.get(nounA);
+        List<Integer> bIds = nounToId.get(nounB);
         return synsetIdToWord.get(sap.ancestor(aIds, bIds));
     }
 
     // do unit testing of this class
     public static void main(String[] args) {
-        WordNet wordNet = new WordNet("synsets.txt", "hypernyms.txt");
+        WordNet wordNet = new WordNet("lib\\synsets.txt", "lib\\hypernyms.txt");
         wordNet.isNoun("word");
         String sap = wordNet.sap("worm", "bird");
         System.out.println(sap);
