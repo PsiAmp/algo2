@@ -84,7 +84,7 @@ public class BFS {
     }
 
     public int[] pathTo(int v) {
-        if (!hasPathTo(v)) return null;
+        if (!hasPathTo(v)) return new int[0];
 
         int[] path = new int[distTo[v] + 1];
 
@@ -98,7 +98,7 @@ public class BFS {
     }
 
     public int[] pathToReversed(int v) {
-        if (!hasPathTo(v)) return null;
+        if (!hasPathTo(v)) return new int[0];
 
         int[] path = new int[distTo[v] + 1];
 
