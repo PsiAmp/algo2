@@ -1,5 +1,3 @@
-package week1;
-
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 
@@ -11,6 +9,7 @@ import java.util.Set;
 
 public class WordNet {
 
+    // TODO maybe change to a simple List
     // Map containing synset nouns aa a key and a list of synset ids where this noun appears
     private HashMap<String, Set<Integer>> nounToId;
 

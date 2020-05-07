@@ -1,5 +1,3 @@
-package week1;
-
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -16,8 +14,10 @@ public class Outcast {
     public String outcast(String[] nouns) {
         int dist[] = new int[nouns.length];
 
+
+        // Calculate distances from every point to all other points
         for (int i = 0; i < nouns.length; i++) {
-            for (int j = i+1; j < nouns.length; j++) {
+            for (int j = i + 1; j < nouns.length; j++) {
                 int distance = wordnet.distance(nouns[i], nouns[j]);
                 dist[i] += distance;
                 dist[j] += distance;
