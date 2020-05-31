@@ -1,3 +1,5 @@
+package week1;
+
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.Queue;
 
@@ -33,7 +35,7 @@ public class ParallelBFS extends BFS {
             Integer v = queue.dequeue();
             Iterable<Integer> adj = g.adj(v);
             for (Integer w : adj) {
-                if (!visited[w]) {
+                if (!visited[w] && distTo[v]+1 < ancestorData.distance) {
                     distTo[w] = distTo[v] + 1;
                     visited[w] = true;
                     queue.enqueue(w);

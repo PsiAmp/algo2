@@ -1,3 +1,5 @@
+package week1;
+
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.Queue;
 
@@ -44,7 +46,7 @@ public class BFS {
     private void bfs(Digraph g, Iterable<Integer> vertices) {
         Queue<Integer> q = new Queue<>();
 
-        for (int vertex : vertices) {
+        for (Integer vertex : vertices) {
             validateVertex(vertex);
             q.enqueue(vertex);
             distTo[vertex] = 0;

@@ -1,3 +1,5 @@
+package week1;
+
 public class AncestorData {
 
     public AncestorData(int vertex, int distance) {

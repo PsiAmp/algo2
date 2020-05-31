@@ -1,7 +1,10 @@
+package week1;
+
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class SAP {
 
@@ -19,16 +22,20 @@ public class SAP {
     }
 
     public int length(int v, int w) {
+        if (!validateVertex(v) || !validateVertex(w))
+            throw new IllegalArgumentException();
+
         return findAncestorData(Arrays.asList(v), Arrays.asList(w)).distance;
     }
 
     public int ancestor(int v, int w) {
+        if (!validateVertex(v) || !validateVertex(w))
+            throw new IllegalArgumentException();
+
         return findAncestorData(Arrays.asList(v), Arrays.asList(w)).vertex;
     }
 
     private AncestorData findAncestorData(Iterable<Integer> v, Iterable<Integer> w) {
-        if (v == null || w == null) throw new IllegalArgumentException("Argument can't be null");
-
         if (v == vCached && w == wCached) return ancestorDataCached;
 
         AncestorData ancestorData = new AncestorData(-1, Integer.MAX_VALUE);
@@ -58,12 +65,33 @@ public class SAP {
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
+        if (!validateVertices(v) || !validateVertices(w))
+            throw new IllegalArgumentException();
+
         return findAncestorData(v, w).distance;
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
+        if (!validateVertices(v) || !validateVertices(w))
+            throw new IllegalArgumentException();
+
         return findAncestorData(v, w).vertex;
+    }
+
+    private boolean validateVertex(int vertex) {
+        if (vertex < 0 || vertex > g.V() - 1)
+            return false;
+        return true;
+    }
+
+    private boolean validateVertices(Iterable<Integer> vertices) {
+        if (vertices == null) return false;
+        for (Integer vertex : vertices) {
+            if (vertex == null || vertex < 0 || vertex > g.V() - 1)
+                return false;
+        }
+        return true;
     }
 
     // do unit testing of this class
@@ -72,22 +100,16 @@ public class SAP {
         Digraph G = new Digraph(in);
         SAP sap = new SAP(G);
 
-//        System.out.println("ansestor = " + sap.ancestor(13, 4));
-//        System.out.println("len = " + sap.length(13, 4));
-//        System.out.println("ansestor = " + sap.ancestor(13, 1));
-//        System.out.println("len = " + sap.length(13, 1));
+        System.out.println("ansestor = " + sap.ancestor(13, 4));
+        System.out.println("len = " + sap.length(13, 4));
+        System.out.println("ansestor = " + sap.ancestor(13, 1));
+        System.out.println("len = " + sap.length(13, 1));
 
-        //System.out.println("ansestor = " + sap.ancestor(34252, 29893));
-        System.out.println("len = " + sap.length(5, 6));
 
-//        List<Integer> v = Arrays.asList(0, 7, 9, 12, -1);
-//        List<Integer> w = Arrays.asList(1, 2, 4, 5, 10);
-//        System.out.println("__ansestor = " + sap.ancestor(v, w));
-        //System.out.println("__a_length = " + sap.length(v, w));
-
-//        System.out.println("a = " + sap.ancestor(2,6));
-//        System.out.println("d = " + sap.length(2,6));
-
+        List<Integer> v = Arrays.asList(0, 7, 9, 12);
+        List<Integer> w = Arrays.asList(1, 2, 4, 5, 13, 10);
+        System.out.println("__ansestor = " + sap.ancestor(v, w));
+        System.out.println("__a_length = " + sap.length(v, w));
 
 //        while (!StdIn.isEmpty()) {
 //            int v = StdIn.readInt();
